@@ -4,7 +4,6 @@ import com.example.Hustlers.dto.AuthenticationRequest;
 import com.example.Hustlers.dto.AuthenticationResponse;
 import com.example.Hustlers.dto.RegisterRequest;
 import com.example.Hustlers.repository.UserRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import com.example.Hustlers.model.User;
 import org.springframework.security.authentication.AuthenticationManager;
