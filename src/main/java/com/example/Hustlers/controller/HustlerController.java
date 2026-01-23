@@ -8,13 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-//posibila rezolvare:
-@EqualsAndHashCode(exclude = {"hustlerProfile"})
-@ToString(exclude = {"hustlerProfile"})
-
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor

@@ -12,6 +12,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+//rezolvare posibila :
+@EqualsAndHashCode(exclude = {"user", "serviceCatalog"})
+@ToString(exclude = {"user", "serviceCatalog"})
+
+
 @Entity
 @Builder
 @NoArgsConstructor
