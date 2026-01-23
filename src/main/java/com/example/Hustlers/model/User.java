@@ -14,6 +14,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+//posibila rezolvare:
+@EqualsAndHashCode(exclude = {"hustlerProfile"})
+@ToString(exclude = {"hustlerProfile"})
+
 @Data
 @Builder
 @NoArgsConstructor

@@ -10,12 +10,20 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Table(name = "hustlers")
+
+//rezolvare posibila :
+@EqualsAndHashCode(exclude = {"user", "serviceCatalog"})
+@ToString(exclude = {"user", "serviceCatalog"})
+
 public class HustlerProfile {
 
     @Id
@@ -31,6 +39,7 @@ public class HustlerProfile {
     private Boolean isActive;
 //    private Set<Services> services;
 //    private String location;
+
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
