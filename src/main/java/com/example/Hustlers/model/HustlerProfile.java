@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,12 +31,14 @@ public class HustlerProfile {
     private String description;
     private Double rating;
     private Boolean isActive;
-//    private Set<Services> services;
 //    private String location;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    @OneToMany(mappedBy = "hustler", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Offer> serviceCatalog = new LinkedHashSet<>();
 
     public HustlerProfile(HustlerProfileDto dto)
     {

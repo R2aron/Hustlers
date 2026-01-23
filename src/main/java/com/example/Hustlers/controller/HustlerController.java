@@ -2,7 +2,6 @@ package com.example.Hustlers.controller;
 
 import com.example.Hustlers.dto.HustlerProfileDto;
 import com.example.Hustlers.service.HustlerServiceInterface;
-import com.example.Hustlers.service.serviceImplementation.HustlerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +20,19 @@ public class HustlerController {
     public ResponseEntity<HustlerProfileDto> createHustler(@PathVariable UUID userId, @Valid @RequestBody HustlerProfileDto dto)
     {
         return ResponseEntity.ok(hustlerService.createHustlerProfile(userId, dto));
+    }
+
+    @GetMapping("/{userId}/getHustlerByUserId")
+    public ResponseEntity<HustlerProfileDto> findHustlerProfileByUserId(@PathVariable UUID userId)
+    {
+        return ResponseEntity.ok(hustlerService.getHustlerProfile(userId));
+    }
+
+    @DeleteMapping("/{userId}/deleteHustlerProfile")
+    public ResponseEntity<Void> deletehustlerProfile(@PathVariable UUID userId)
+    {
+        hustlerService.deleteHustlerProfile(userId);
+        return ResponseEntity.noContent().build();
     }
 
 
