@@ -32,6 +32,12 @@ public class HustlerService implements HustlerServiceInterface {
         return new HustlerProfileDto(hustlerProfile);
     }
 
+    public HustlerProfile findbyId(UUID hustlerId)
+    {
+        return hustlerRepository.findById(hustlerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Hustler not found"));
+    }
+
     // de revizuit
     public HustlerProfileDto getHustlerProfile(UUID userId)
     {

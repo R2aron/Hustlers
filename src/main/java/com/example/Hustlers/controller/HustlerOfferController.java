@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,5 +21,18 @@ public class HustlerOfferController {
     public ResponseEntity<OfferDto> createOffer(@PathVariable UUID hustlerId, @Valid @RequestBody OfferDto dto)
     {
         return ResponseEntity.ok(offerService.createOffer(hustlerId, dto));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OfferDto>> getAllOffersByHustlerId(@PathVariable UUID hustlerId)
+    {
+        return ResponseEntity.ok(offerService.getAllOffers(hustlerId));
+    }
+
+    @DeleteMapping("/{serviceId}/delete")
+    public ResponseEntity<Void> deleteOffer(@PathVariable UUID hustlerId, @PathVariable Integer serviceId)
+    {
+        offerService.deleteOffer(hustlerId, serviceId);
+        return ResponseEntity.noContent().build();
     }
 }

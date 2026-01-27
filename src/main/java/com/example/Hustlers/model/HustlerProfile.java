@@ -1,17 +1,13 @@
 package com.example.Hustlers.model;
-
-
 import com.example.Hustlers.dto.HustlerProfileDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
-
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -47,6 +43,7 @@ public class HustlerProfile {
 
     @OneToMany(mappedBy = "hustler", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Offer> serviceCatalog = new LinkedHashSet<>();
+//    de vazut ce contine mai exact acest SET
 
     public HustlerProfile(HustlerProfileDto dto)
     {
