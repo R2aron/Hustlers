@@ -56,6 +56,8 @@ public class User implements UserDetails {
         }
     }
 
+    //de facut constructor general pentru user fara id si hustlerProfile
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

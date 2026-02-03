@@ -22,10 +22,14 @@ public class Offer {
     private String description;
     private Double price;
     private String approximateDuration;
+    private Float rating;
+    private String review;
     @Enumerated(EnumType.STRING)
     private ServicesCategorys servicesCategory;
     @Enumerated(EnumType.STRING)
     private Locations location;
+    //pictures
+    // Boolean active
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
