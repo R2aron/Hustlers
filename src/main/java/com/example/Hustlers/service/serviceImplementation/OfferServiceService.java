@@ -1,5 +1,6 @@
 package com.example.Hustlers.service.serviceImplementation;
 
+import com.example.Hustlers.dto.RequestOfferDtoTEST;
 import com.example.Hustlers.mapper.OfferMapper;
 import com.example.Hustlers.dto.OfferDto;
 import com.example.Hustlers.model.HustlerProfile;
@@ -45,6 +46,41 @@ public class OfferServiceService implements OfferServiceInterface {
 
     }
 
+//    @Override//de facut cu patch
+//    public OfferDto update(UUID hustlerId, Integer serviceId, OfferDto dto)
+//    {
+//        if(hustlerRepository.findById(hustlerId).isPresent()) {
+//            Offer offer = offerRepository.findById(serviceId)
+//                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
+//            if(dto.getName()!= null) offer.setName(dto.getName());
+//            if(dto.getDescription()!= null)offer.setDescription(dto.getDescription());
+//            if(dto.getPrice()!= null)offer.setPrice(dto.getPrice());
+//            if(dto.getApproximateDuration()!= null)offer.setApproximateDuration(dto.getApproximateDuration());
+//            if(dto.getServicesCategory()!= null)offer.setServicesCategory(dto.getServicesCategory());
+//            if(dto.getLocation()!= null)offer.setLocation(dto.getLocation());
+//            Offer updatedOffer = offerRepository.save(offer);
+//            return new OfferDto(updatedOffer);
+//        }
+//        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hustler not found");
+//    }
+
+//    TEST
+    public OfferDto update(UUID hustlerId, Integer serviceId, RequestOfferDtoTEST dto)
+    {
+        if(hustlerRepository.findById(hustlerId).isPresent()) {
+            Offer offer = offerRepository.findById(serviceId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
+            if(dto.name()!= null) offer.setName(dto.name());
+            if(dto.description()!= null)offer.setDescription(dto.description());
+            if(dto.price()!= null)offer.setPrice(dto.price());
+            if(dto.approximateDuration()!= null)offer.setApproximateDuration(dto.approximateDuration());
+            if(dto.servicesCategory()!= null)offer.setServicesCategory(dto.servicesCategory());
+            if(dto.location()!= null)offer.setLocation(dto.location());
+            Offer updatedOffer = offerRepository.save(offer);
+            return new OfferDto(updatedOffer);
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hustler not found");
+    }
 
 
     @Override

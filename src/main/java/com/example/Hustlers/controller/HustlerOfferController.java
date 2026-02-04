@@ -1,9 +1,11 @@
 package com.example.Hustlers.controller;
 
 import com.example.Hustlers.dto.OfferDto;
+import com.example.Hustlers.dto.RequestOfferDtoTEST;
 import com.example.Hustlers.service.OfferServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,12 @@ public class HustlerOfferController {
     public ResponseEntity<List<OfferDto>> getAllOffersByHustlerId(@PathVariable UUID hustlerId)
     {
         return ResponseEntity.ok(offerService.getAllOffers(hustlerId));
+    }
+
+    @PatchMapping("/{serviceId}/update")
+    public ResponseEntity<OfferDto> updateOffer(@PathVariable UUID hustlerId, @PathVariable Integer serviceId, @Valid @ParameterObject RequestOfferDtoTEST dto)
+    {
+        return ResponseEntity.ok(offerService.update(hustlerId, serviceId, dto));
     }
 
     @DeleteMapping("/{serviceId}/delete")

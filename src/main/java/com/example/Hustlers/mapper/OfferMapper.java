@@ -19,4 +19,6 @@ public class OfferMapper {
                 }).collect(Collectors.toList());
         return offerDtoList;
     }
+
+
 }

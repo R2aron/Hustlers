@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.apache.tomcat.util.http.RequestUtil.normalize;
-
-
 @Service
 @RequiredArgsConstructor
 public class SearchService implements SearchServiceInterface {
@@ -45,7 +42,6 @@ public List<OfferDto> search(SearchCriteria criteria)
             criteria.minPrice(),
             criteria.maxPrice()
     ));
-
 }
 
 }
