@@ -34,7 +34,11 @@ public class SecurityConfiguration {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/hustlers/*/offers/**").hasAuthority("HUSTLER")
+//                        .requestMatchers(HttpMethod.POST, "/hustlers/*/offers/**").hasAuthority("HUSTLER")
+                        .requestMatchers("/api/v1/hustlers/**").hasAnyAuthority("HUSTLER", "USER")
+                        .requestMatchers("/api/v1/offers/{hustlerId}/**").hasAuthority("HUSTLER")
+                        .requestMatchers("/api/v1/users/**").hasAnyAuthority("USER", "HUSTLER")
+                        .requestMatchers("/api/v1/search/services/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )

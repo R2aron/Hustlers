@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+//DE PUS NUMELE HOMECONTROLLER
 @RestController
-@RequestMapping("/home/search/services")//de pus calea
+@RequestMapping("/api/v1/search/services") //de pus calea
 @RequiredArgsConstructor
 public class SearchController {
 
