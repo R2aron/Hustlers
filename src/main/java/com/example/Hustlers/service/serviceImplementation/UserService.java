@@ -14,30 +14,23 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserServiceInterface {
 
-    //de facut metoda pentru hustler si user
     private final UserRepository userRepository;
     private final HustlerRepository hustlerRepository;
 
-//    @Override
-//    public UserDto getCurrentUser() {
-//            String email = SecurityContextHolder.getContext().getAuthentication().getName();
-//            User user = userRepository.findByEmail(email)
-//                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-//            return new UserDto(user);
-//        }
 
-    public AccountDto getCurrentAccount()
-    {
+    @Override
+    public AccountDto getCurrentAccount() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        switch (user.getRole())
-        {
+        switch (user.getRole()) {
             case USER:
                 return new UserDto(user);
             case HUSTLER:
@@ -48,4 +41,17 @@ public class UserService implements UserServiceInterface {
         }
     }
 
+    @Override
+    public UserDto updateUser(UUID userId, UserDto userDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (userDto.getFirstname() != null) user.setFirstname(userDto.getFirstname());
+        if (userDto.getLastname() != null) user.setLastname(userDto.getLastname());
+        if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
+
+        userRepository.save(user);
+        return new UserDto(user);
+
     }
+}

@@ -1,7 +1,7 @@
 package com.example.Hustlers.controller;
 
 import com.example.Hustlers.dto.OfferDto;
-import com.example.Hustlers.dto.RequestOfferDtoTEST;
+import com.example.Hustlers.dto.RequestOfferDto;
 import com.example.Hustlers.service.OfferServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class HustlerOfferController {
 
     @PreAuthorize("hasAuthority('HUSTLER')")
     @PatchMapping("/{serviceId}/update")
-    public ResponseEntity<OfferDto> updateOffer(@PathVariable UUID hustlerId, @PathVariable Integer serviceId, @Valid @ParameterObject RequestOfferDtoTEST dto)
+    public ResponseEntity<OfferDto> updateOffer(@PathVariable UUID hustlerId, @PathVariable Integer serviceId, @Valid @ParameterObject RequestOfferDto dto)
     {
         return ResponseEntity.ok(offerService.update(hustlerId, serviceId, dto));
     }

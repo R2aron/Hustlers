@@ -1,6 +1,6 @@
 package com.example.Hustlers.service.serviceImplementation;
 
-import com.example.Hustlers.dto.RequestOfferDtoTEST;
+import com.example.Hustlers.dto.RequestOfferDto;
 import com.example.Hustlers.mapper.OfferMapper;
 import com.example.Hustlers.dto.OfferDto;
 import com.example.Hustlers.model.HustlerProfile;
@@ -65,7 +65,7 @@ public class OfferServiceService implements OfferServiceInterface {
 //    }
 
 //    TEST
-    public OfferDto update(UUID hustlerId, Integer serviceId, RequestOfferDtoTEST dto)
+    public OfferDto update(UUID hustlerId, Integer serviceId, RequestOfferDto dto)
     {
         if(hustlerRepository.findById(hustlerId).isPresent()) {
             Offer offer = offerRepository.findById(serviceId)

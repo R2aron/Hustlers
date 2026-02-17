@@ -1,7 +1,7 @@
 package com.example.Hustlers.service;
 
 import com.example.Hustlers.dto.OfferDto;
-import com.example.Hustlers.dto.RequestOfferDtoTEST;
+import com.example.Hustlers.dto.RequestOfferDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,5 +12,5 @@ public interface OfferServiceInterface {
     public List<OfferDto> getAllOffers(UUID hustlerId);
     public void deleteOffer(UUID hustlerId,Integer serviceId);
 //    public OfferDto update(UUID hustlerId, Integer serviceId, OfferDto dto);
-    public OfferDto update(UUID hustlerId, Integer serviceId, RequestOfferDtoTEST dto);
+    public OfferDto update(UUID hustlerId, Integer serviceId, RequestOfferDto dto);
 }

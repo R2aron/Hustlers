@@ -1,6 +1,7 @@
 package com.example.Hustlers.service.serviceImplementation;
 
 import com.example.Hustlers.dto.HustlerProfileDto;
+import com.example.Hustlers.dto.RequestHustlerProfileDto;
 import com.example.Hustlers.model.HustlerProfile;
 import com.example.Hustlers.model.Role;
 import com.example.Hustlers.model.User;
@@ -49,7 +50,23 @@ public class HustlerService implements HustlerServiceInterface {
 
     }
 
-
+    public HustlerProfileDto update(UUID userId, UUID hustlerId, RequestHustlerProfileDto dto)
+    {
+        if(userRepository.findById(userId).isPresent() && userRepository.findById(userId).get().getHustlerProfile().getId().equals(hustlerId)) {
+            HustlerProfile hustlerProfile = hustlerRepository.findById(hustlerId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hustler not found"));
+            if(dto.fullname()!= null) hustlerProfile.setFullname(dto.fullname());
+            if(dto.displayName()!= null) hustlerProfile.setDisplayName(dto.displayName());
+            if(dto.email()!= null) hustlerProfile.setEmail(dto.email());
+            if(dto.companyName()!= null) hustlerProfile.setCompanyName(dto.companyName());
+            if(dto.phoneNumber()!= null) hustlerProfile.setPhoneNumber(dto.phoneNumber());
+            if(dto.description()!= null) hustlerProfile.setDescription(dto.description());
+            if(dto.location()!= null) hustlerProfile.setLocation(dto.location());
+            HustlerProfile hustlerProfileUpdated = hustlerRepository.save(hustlerProfile);
+            return new HustlerProfileDto(hustlerProfileUpdated);
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
 
     public void deleteHustlerProfile(UUID userId)
     {

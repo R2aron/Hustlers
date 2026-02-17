@@ -35,7 +35,9 @@ public class HustlerProfile {
     private String description;
     private Double rating;
     private Boolean isActive;
-//    private String location;
+    @Enumerated(EnumType.STRING)
+    private Locations location;
+    private Float hustlerRating;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
@@ -43,7 +45,6 @@ public class HustlerProfile {
 
     @OneToMany(mappedBy = "hustler", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Offer> serviceCatalog = new LinkedHashSet<>();
-//    de vazut ce contine mai exact acest SET
 
     public HustlerProfile(HustlerProfileDto dto)
     {

@@ -1,6 +1,7 @@
 package com.example.Hustlers.controller;
 
 import com.example.Hustlers.dto.HustlerProfileDto;
+import com.example.Hustlers.dto.RequestHustlerProfileDto;
 import com.example.Hustlers.service.HustlerServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,13 @@ public class HustlerController {
     public ResponseEntity<HustlerProfileDto> findHustlerProfileByUserId(@PathVariable UUID userId)
     {
         return ResponseEntity.ok(hustlerService.getHustlerProfile(userId));
+    }
+
+    @PreAuthorize("hasAuthority('HUSTLER')")
+    @PatchMapping("/{userId}/{hustlerId}/updateProfile")
+    public ResponseEntity<HustlerProfileDto> updateHustlerProfile(@PathVariable UUID userId, @PathVariable UUID hustlerId, @Valid @RequestBody RequestHustlerProfileDto dto)
+    {
+        return ResponseEntity.ok(hustlerService.update(userId, hustlerId, dto));
     }
 
     @PreAuthorize("hasAuthority('HUSTLER')")
