@@ -14,6 +14,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@EqualsAndHashCode(exclude = {"hustlerProfile"})
+@ToString(exclude = {"hustlerProfile"})
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -31,6 +37,26 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private Float userRating;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private HustlerProfile hustlerProfile;
+
+    public void setHustlerProfile(HustlerProfile profile)
+    {
+        if(this.hustlerProfile != null)
+        {
+            this.hustlerProfile.setUser(null);
+        }
+        this.hustlerProfile = profile;
+
+        if(profile != null)
+        {
+            profile.setUser(this);
+        }
+    }
+
+    //de facut constructor general pentru user fara id si hustlerProfile
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private HustlerProfile hustlerProfile;

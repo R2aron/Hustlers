@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class HustlerProfileDto {
+public class HustlerProfileDto implements AccountDto{
 
     @NotBlank(message = "Field cannot be empty")
     private String fullname;
