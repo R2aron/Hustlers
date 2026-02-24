@@ -17,11 +17,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class HustlerService implements HustlerServiceInterface {
+public class HustlerServiceImpl implements HustlerServiceInterface {
 
     private final HustlerRepository hustlerRepository;
     private final UserRepository userRepository;
 
+    @Override
     public HustlerProfileDto createHustlerProfile(UUID userId, HustlerProfileDto dto)
     {
         User user = userRepository.findById(userId)
@@ -40,6 +41,7 @@ public class HustlerService implements HustlerServiceInterface {
     }
 
     // de revizuit
+    @Override
     public HustlerProfileDto getHustlerProfile(UUID userId)
     {
         User user = userRepository.findById(userId)
@@ -50,6 +52,7 @@ public class HustlerService implements HustlerServiceInterface {
 
     }
 
+    @Override
     public HustlerProfileDto update(UUID userId, UUID hustlerId, RequestHustlerProfileDto dto)
     {
         if(userRepository.findById(userId).isPresent() && userRepository.findById(userId).get().getHustlerProfile().getId().equals(hustlerId)) {
@@ -68,6 +71,7 @@ public class HustlerService implements HustlerServiceInterface {
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
 
+    @Override
     public void deleteHustlerProfile(UUID userId)
     {
         HustlerProfile hustlerProfile = hustlerRepository.findByUserId(userId)
@@ -83,6 +87,7 @@ public class HustlerService implements HustlerServiceInterface {
 
     }
 
+    @Override
     public HustlerProfileDto findHustlerById(UUID hustlerId)
     {
         HustlerProfile hustlerProfile = hustlerRepository.findById(hustlerId)

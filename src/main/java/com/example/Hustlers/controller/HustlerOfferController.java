@@ -3,13 +3,18 @@ package com.example.Hustlers.controller;
 import com.example.Hustlers.dto.OfferDto;
 import com.example.Hustlers.dto.RequestOfferDto;
 import com.example.Hustlers.service.OfferServiceInterface;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,11 +26,25 @@ public class HustlerOfferController {
     private final OfferServiceInterface offerService;
 
     @PreAuthorize("hasAuthority('HUSTLER')")
-    @PostMapping("/create")
-    public ResponseEntity<OfferDto> createOffer(@PathVariable UUID hustlerId, @Valid @RequestBody OfferDto dto)
+    @Operation(summary = "Create offer with images (multipart)")
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createOffer(@RequestPart UUID hustlerId, @Valid @RequestPart OfferDto dto, @RequestPart(value = "images", required = false) LinkedHashSet<MultipartFile> imagesFile)
     {
-        return ResponseEntity.ok(offerService.createOffer(hustlerId, dto));
+        try {
+            return ResponseEntity.ok(offerService.createOffer(hustlerId, dto, imagesFile));
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+//    @PreAuthorize("hasAuthority('HUSTLER')")
+//    @PostMapping("/create")
+//    public ResponseEntity<OfferDto> createOffer(@PathVariable UUID hustlerId, @Valid @RequestBody OfferDto dto)
+//    {
+//        return ResponseEntity.ok(offerService.createOffer(hustlerId, dto));
+//    }
 
     @PreAuthorize("hasAuthority('HUSTLER')")
     @GetMapping

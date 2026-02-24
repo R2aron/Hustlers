@@ -11,30 +11,81 @@ import com.example.Hustlers.service.OfferServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class OfferServiceService implements OfferServiceInterface {
+public class OfferServiceServiceImpl implements OfferServiceInterface {
 
     private final OfferRepository offerRepository;
     private final HustlerRepository hustlerRepository;
 
 
-//de judecat cum fac dto-urile pentru "Offer"  .
     @Override
-    public OfferDto createOffer(UUID hustlerId, OfferDto dto) {
+    public OfferDto createOffer(UUID hustlerId, OfferDto dto, LinkedHashSet<MultipartFile> imagesFile) {
         HustlerProfile hustler = hustlerRepository.findById(hustlerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hustler not found"));
         Offer offer = new Offer(dto);
         offer.setHustler(hustler);
+        offer.setOfferImagesSet(getImagesSet(imagesFile));
         hustler.getServiceCatalog().add(offer);
+
         Offer offerToSave = offerRepository.save(offer);
 
         return new OfferDto(offerToSave);
+    }
+
+
+//de judecat cum fac dto-urile pentru "Offer"  .
+//    @Override
+//    public OfferDto createOffer(UUID hustlerId, OfferDto dto) {
+//        HustlerProfile hustler = hustlerRepository.findById(hustlerId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hustler not found"));
+//        Offer offer = new Offer(dto);
+//        offer.setHustler(hustler);
+//        offer.setOfferImagesSet(getImagesSet(dto.getImageSet()));
+//        hustler.getServiceCatalog().add(offer);
+//
+//        Offer offerToSave = offerRepository.save(offer);
+//
+//        return new OfferDto(offerToSave);
+//    }
+
+//    private LinkedHashSet<Offer.Image> getImagesSet(LinkedHashSet<OfferImageDto> dtoSet)
+//    {
+//        LinkedHashSet<Offer.Image> offerImageSet = new LinkedHashSet<>();
+//        offerImageSet = dtoSet.stream().map(dto ->{
+//            Offer.Image imageToAdd = new Offer.Image(dto);
+//            return imageToAdd;
+//        })
+//                .collect(Collectors.toCollection(LinkedHashSet::new));
+//
+//        return offerImageSet;
+//    }
+
+
+    private LinkedHashSet<Offer.Image> getImagesSet(LinkedHashSet<MultipartFile> imageSet)
+    {
+        LinkedHashSet<Offer.Image> offerImageSet;
+        offerImageSet = imageSet.stream().map(multipartFile ->{
+                    Offer.Image imageToAdd;
+                    try {
+                        imageToAdd = new Offer.Image(multipartFile);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return imageToAdd;
+                })
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        return offerImageSet;
     }
 
 
@@ -46,25 +97,7 @@ public class OfferServiceService implements OfferServiceInterface {
 
     }
 
-//    @Override//de facut cu patch
-//    public OfferDto update(UUID hustlerId, Integer serviceId, OfferDto dto)
-//    {
-//        if(hustlerRepository.findById(hustlerId).isPresent()) {
-//            Offer offer = offerRepository.findById(serviceId)
-//                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not found"));
-//            if(dto.getName()!= null) offer.setName(dto.getName());
-//            if(dto.getDescription()!= null)offer.setDescription(dto.getDescription());
-//            if(dto.getPrice()!= null)offer.setPrice(dto.getPrice());
-//            if(dto.getApproximateDuration()!= null)offer.setApproximateDuration(dto.getApproximateDuration());
-//            if(dto.getServicesCategory()!= null)offer.setServicesCategory(dto.getServicesCategory());
-//            if(dto.getLocation()!= null)offer.setLocation(dto.getLocation());
-//            Offer updatedOffer = offerRepository.save(offer);
-//            return new OfferDto(updatedOffer);
-//        }
-//        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hustler not found");
-//    }
-
-//    TEST
+    @Override
     public OfferDto update(UUID hustlerId, Integer serviceId, RequestOfferDto dto)
     {
         if(hustlerRepository.findById(hustlerId).isPresent()) {
@@ -99,6 +132,5 @@ public class OfferServiceService implements OfferServiceInterface {
     public OfferDto getOffer(UUID hustlerId) {
         return null;
     }
-
 
 }

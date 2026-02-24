@@ -14,9 +14,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SearchService implements SearchServiceInterface {
+public class SearchServiceImpl implements SearchServiceInterface {
     public final OfferRepository offerRepository;
 
+    @Override
     public List<OfferDto> findOffersByCategoryLocation(ServicesCategorys category, Locations location){
         if(category.ordinal() >= 0  && location.ordinal() >= 0)
         {
@@ -28,11 +29,13 @@ public class SearchService implements SearchServiceInterface {
 
     }
 
-
-private String normalizeParam(String param) {
+@Override
+public String normalizeParam(String param) {
     return (param == null || param.isBlank()) ? null : param.trim().toLowerCase();
 }
 
+//DE DETALIAT SEARCHUL
+    @Override
 public List<OfferDto> search(SearchCriteria criteria)
 {
     return OfferMapper.toDtoList(offerRepository.search(

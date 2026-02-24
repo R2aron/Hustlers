@@ -1,6 +1,7 @@
 package com.example.Hustlers.service.serviceImplementation;
 
 import com.example.Hustlers.dto.AccountDto;
+import com.example.Hustlers.dto.EmailDetails;
 import com.example.Hustlers.dto.HustlerProfileDto;
 import com.example.Hustlers.dto.UserDto;
 import com.example.Hustlers.model.HustlerProfile;
@@ -14,14 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserServiceInterface {
+public class UserServiceImpl implements UserServiceInterface {
 
     private final UserRepository userRepository;
     private final HustlerRepository hustlerRepository;
+    private final EmailServiceImpl emailService;
 
 
     @Override
@@ -42,10 +42,16 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserDto updateUser(UUID userId, UserDto userDto) {
-        User user = userRepository.findById(userId)
+// Nu cred ca am nevoie de userID pentru ca doar userul logat poate sa isi updateze contul, deci pot sa iau userul din context
+    public UserDto updateUser(UserDto userDto) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
+//        if(user.getId() != userId) {
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only update your own account");
+//        }
         if (userDto.getFirstname() != null) user.setFirstname(userDto.getFirstname());
         if (userDto.getLastname() != null) user.setLastname(userDto.getLastname());
         if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
@@ -53,5 +59,19 @@ public class UserService implements UserServiceInterface {
         userRepository.save(user);
         return new UserDto(user);
 
+    }
+
+    @Override
+    public void deleteUser() {
+
+        EmailDetails emailDetails = new EmailDetails();
+        emailDetails.setRecipient(SecurityContextHolder.getContext().getAuthentication().getName());
+        emailDetails.setSubject("Account Deletion Confirmation");
+        emailDetails.setMsgBody("Dear User,\n\nYour account has been successfully deleted. We're sorry to see you go. If you have any feedback or if there's anything we can do to improve our service, please don't hesitate to reach out.\n\nBest regards,\nThe Hustlers Team");
+        emailService.sendSimpleMail(emailDetails);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        userRepository.delete(user);
     }
 }

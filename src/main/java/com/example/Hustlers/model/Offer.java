@@ -1,11 +1,13 @@
 package com.example.Hustlers.model;
 
 import com.example.Hustlers.dto.OfferDto;
+import com.example.Hustlers.dto.OfferImageDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.LinkedHashSet;
 
 @Entity
 @Builder
@@ -28,8 +30,9 @@ public class Offer {
     private ServicesCategorys servicesCategory;
     @Enumerated(EnumType.STRING)
     private Locations location;
-    //pictures
     // Boolean active
+    private LinkedHashSet<Image> offerImagesSet;
+//    private LinkedHashSet<MultipartFile> offerImageSet1;
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -44,5 +47,33 @@ public class Offer {
         this.approximateDuration = dto.getApproximateDuration();
         this.servicesCategory = dto.getServicesCategory();
         this.location = dto.getLocation();
+    }
+
+    public void addImage(Image image)
+    {
+        offerImagesSet.add(image);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @EqualsAndHashCode
+    public static class Image {
+        private String imageFileName;
+        private String imageType;
+        @Lob
+        private byte[] imageData;
+
+        public Image(OfferImageDto dto)
+        {
+            this.imageData = dto.getImageData();
+            this.imageType = dto.getImageType();
+            this.imageFileName = dto.getImageFileName();
+        }
+
+        public Image(MultipartFile multipartFile) throws IOException {
+            this.imageData = multipartFile.getBytes();
+            this.imageType = multipartFile.getContentType();
+            this.imageFileName = multipartFile.getOriginalFilename();
+        }
     }
 }
